@@ -1,6 +1,9 @@
 {
   "name": "aigency",
   "version": "0.1.0",
+  "engines": {
+    "node": "18.x"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -11,5 +14,9 @@
     "react": "latest",
     "react-dom": "latest",
     "firebase": "^10.8.0"
+  },
+  "devDependencies": {
+    "@types/react": "19.0.10",
+    "typescript": "5.7.3"
   }
 }
