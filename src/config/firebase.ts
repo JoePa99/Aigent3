@@ -1,18 +1,21 @@
-import { initializeApp, getApps, cert } from 'firebase-admin/app';
+import { initializeApp, cert } from 'firebase-admin/app';
 import { getFirestore } from 'firebase-admin/firestore';
 import { getStorage } from 'firebase-admin/storage';
 
-const firebaseConfig = {
-  credential: cert({
-    projectId: "aigencycursor",
-    clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
-    privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
-  }),
-  storageBucket: "aigencycursor.firebasestorage.app"
+const serviceAccount = {
+  projectId: "aigencycursor",
+  clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
+  privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
 };
 
-if (!getApps().length) {
-  initializeApp(firebaseConfig);
+try {
+  initializeApp({
+    credential: cert(serviceAccount),
+    storageBucket: "aigencycursor.firebasestorage.app"
+  });
+  console.log('Firebase initialized successfully');
+} catch (error) {
+  console.error('Firebase initialization error:', error);
 }
 
 export const db = getFirestore();
