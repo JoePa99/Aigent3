@@ -1,29 +1,33 @@
-import { Request, Response } from 'express';
+import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { db } from '../src/config/firebase';
+import { collection, addDoc, getDocs } from 'firebase/firestore';
 
-export default async function handler(req: Request, res: Response) {
-  if (req.method !== 'GET') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-
+export default async function handler(
+  request: VercelRequest,
+  response: VercelResponse
+) {
   try {
-    // Try to write to a test collection
-    const testRef = db.collection('test').doc('connection-test');
-    await testRef.set({
-      timestamp: new Date(),
-      status: 'success'
+    // Try to write a test document
+    const testCollection = collection(db, 'test');
+    await addDoc(testCollection, {
+      message: 'Test document',
+      timestamp: new Date()
     });
 
-    // Read it back
-    const doc = await testRef.get();
-    
-    return res.json({ 
+    // Read all documents from test collection
+    const querySnapshot = await getDocs(testCollection);
+    const documents = querySnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+
+    response.status(200).json({ 
       message: 'Firebase connection successful',
-      data: doc.data()
+      documents
     });
   } catch (error) {
     console.error('Firebase test error:', error);
-    return res.status(500).json({ 
+    response.status(500).json({ 
       error: 'Firebase connection failed',
       details: error.message 
     });
