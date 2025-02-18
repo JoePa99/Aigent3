@@ -1,28 +1,7 @@
 {
   "version": 2,
+  "framework": "nextjs",
   "buildCommand": "next build",
   "devCommand": "next dev",
-  "installCommand": "npm install",
-  "framework": "nextjs",
-  "builds": [
-    {
-      "src": "package.json",
-      "use": "@vercel/next"
-    }
-  ],
-  "functions": {
-    "api/*.ts": {
-      "runtime": "@vercel/node"
-    }
-  },
-  "routes": [
-    {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
-    }
-  ],
-  "env": {
-    "FIREBASE_PROJECT_ID": "aigencycursor",
-    "FIREBASE_STORAGE_BUCKET": "aigencycursor.firebasestorage.app"
-  }
+  "installCommand": "npm install"
 } 
