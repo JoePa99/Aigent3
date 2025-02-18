@@ -4,27 +4,27 @@ import { db } from './config/firebase';
 const app = express();
 app.use(express.json());
 
-app.get('/health', async (req, res) => {
+// Root route
+app.get('/', async (req, res) => {
+  res.json({ message: 'Welcome to Aigency API' });
+});
+
+// Health check endpoint
+app.get('/api/health', async (req, res) => {
   try {
-    // Test Firebase connection
-    await db.collection('test').doc('health').set({
-      timestamp: new Date(),
-      status: 'ok'
-    });
-    
-    res.json({ status: 'healthy', message: 'Firebase connection successful' });
+    res.json({ status: 'ok', message: 'Server is running' });
   } catch (error) {
-    res.status(500).json({ 
-      status: 'error', 
-      message: 'Firebase connection failed',
-      error: error.message 
-    });
+    res.status(500).json({ status: 'error', message: error.message });
   }
 });
 
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
+// For Vercel serverless deployment
+export default app;
 
-export default app; 
+// For local development
+if (require.main === module) {
+  const port = process.env.PORT || 3000;
+  app.listen(port, () => {
+    console.log(`Server running on port ${port}`);
+  });
+} 
