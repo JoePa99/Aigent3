@@ -1,13 +1,15 @@
 {
   "name": "aigency",
-  "version": "1.0.0",
-  "private": true,
+  "version": "0.1.0",
   "scripts": {
-    "dev": "vercel dev",
-    "deploy": "vercel deploy"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
   },
   "dependencies": {
-    "firebase": "^10.8.0",
-    "@vercel/node": "^3.0.0"
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest",
+    "firebase": "^10.8.0"
   }
 }
